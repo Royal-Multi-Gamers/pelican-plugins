@@ -24,6 +24,7 @@ class ServerPlayerWidget extends StatsOverviewWidget
 
     protected function getStats(): array
     {
+        /** @var ?GameQuery $gameQuery */
         $gameQuery = static::getGameQuery()->first();
 
         if (!$gameQuery) {

@@ -4,6 +4,7 @@ namespace Boy132\PlayerCounter\Models;
 
 use App\Models\Allocation;
 use App\Models\Egg;
+use Exception;
 use GameQ\GameQ;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -31,19 +32,28 @@ class GameQuery extends Model
         return $this->belongsToMany(Egg::class);
     }
 
-    /** @return array<mixed> */
+    /** @return array<string, mixed> */
     public function runQuery(Allocation $allocation): array
     {
         $ip = is_ipv6($allocation->ip) ? '[' . $allocation->ip . ']' : $allocation->ip;
-        $host = $ip . ':' . ($allocation->port + ($this->query_port_offset ?? 0));
+        $port = $allocation->port + ($this->query_port_offset ?? 0);
+        $host = $ip . ':' . $port;
 
-        $gameQ = new GameQ();
+        try {
+            $gameQ = new GameQ();
 
-        $gameQ->addServer([
-            'type' => $this->query_type,
-            'host' => $host,
-        ]);
+            $gameQ->addServer([
+                'type' => $this->query_type,
+                'host' => $host,
+            ]);
 
-        return $gameQ->process()[$host] ?? [];
+            $gameQ->setOption('debug', config('app.debug'));
+
+            return $gameQ->process()[$host] ?? [];
+        } catch (Exception $exception) {
+            report($exception);
+        }
+
+        return [];
     }
 }
