@@ -74,17 +74,4 @@ class UserCreatableServersPlugin implements HasPluginSettings, Plugin
             ->success()
             ->send();
     }
-
-    public static function make(): static
-    {
-        return app(static::class);
-    }
-
-    public static function get(): static
-    {
-        /** @var static $plugin */
-        $plugin = filament(app(static::class)->getId());
-
-        return $plugin;
-    }
 }
