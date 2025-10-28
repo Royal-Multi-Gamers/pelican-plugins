@@ -2,14 +2,21 @@
 
 namespace Boy132\PlayerCounter\Filament\Server\Pages;
 
+use App\Enums\ContainerStatus;
+use App\Enums\ServerState;
 use App\Models\Server;
+use App\Repositories\Daemon\DaemonFileRepository;
 use App\Traits\Filament\BlockAccessInConflict;
+use Boy132\PlayerCounter\Models\GameQuery;
 use Boy132\PlayerCounter\PlayerCounterPlugin;
 use Exception;
+use Filament\Actions\Action;
 use Filament\Facades\Filament;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\EmbeddedTable;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentView;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\TextColumn;
@@ -62,6 +69,24 @@ class PlayersPage extends Page implements HasTable
      */
     public function table(Table $table): Table
     {
+        /** @var Server $server */
+        $server = Filament::getTenant();
+
+        $fileRepository = (new DaemonFileRepository())->setServer($server);
+
+        $whitelist = [];
+        $ops = [];
+
+        try {
+            $whitelist = json_decode($fileRepository->getContent('whitelist.json'), true, 512, JSON_THROW_ON_ERROR);
+            $whitelist = array_unique(array_map(fn ($data) => $data['name'], $whitelist));
+
+            $ops = json_decode($fileRepository->getContent('ops.json'), true, 512, JSON_THROW_ON_ERROR);
+            $ops = array_unique(array_map(fn ($data) => $data['name'], $ops));
+        } catch (Exception $exception) {
+            report($exception);
+        }
+
         return $table
             ->records(function (?string $search, int $page, int $recordsPerPage) {
                 /** @var Server $server */
@@ -91,13 +116,136 @@ class PlayersPage extends Page implements HasTable
             ])
             ->columns([
                 Split::make([
-                    ImageColumn::make('helm_avatar')
-                        ->state(fn (array $record) => 'https://cravatar.eu/head/' . $record['player'] . '/256.png')
+                    ImageColumn::make('avatar')
+                        ->state(fn (array $record) => 'https://cravatar.eu/helmhead/' . $record['player'] . '/256.png')
                         ->grow(false),
                     TextColumn::make('player')
                         ->searchable(),
+                    TextColumn::make('is_whitelisted')
+                        ->badge()
+                        ->grow(false)
+                        ->state(fn (array $record) => in_array($record['player'], $whitelist) ? trans('player-counter::query.whitelisted') : null),
+                    TextColumn::make('is_op')
+                        ->badge()
+                        ->grow(false)
+                        ->state(fn (array $record) => in_array($record['player'], $ops) ? trans('player-counter::query.op') : null),
                 ]),
-            ]);
+            ])
+            ->recordActions([
+                Action::make('kick')
+                    ->icon('tabler-door-exit')
+                    ->color('danger')
+                    ->action(function (array $record) {
+                        /** @var Server $server */
+                        $server = Filament::getTenant();
+
+                        try {
+                            $server->send('kick ' . $record['player']);
+
+                            Notification::make()
+                                ->title(trans('player-counter::query.notifications.player_kicked'))
+                                ->body($record['player'])
+                                ->success()
+                                ->send();
+
+                            $this->refreshPage();
+                        } catch (Exception $exception) {
+                            report($exception);
+
+                            Notification::make()
+                                ->title(trans('player-counter::query.notifications.player_kick_failed'))
+                                ->body($exception->getMessage())
+                                ->danger()
+                                ->send();
+                        }
+                    }),
+                Action::make('whitelist')
+                    ->label(fn (array $record) => in_array($record['player'], $whitelist) ? trans('player-counter::query.remove_from_whitelist') : trans('player-counter::query.add_to_whitelist'))
+                    ->icon(fn (array $record) => in_array($record['player'], $whitelist) ? 'tabler-playlist-x' : 'tabler-playlist-add')
+                    ->color(fn (array $record) => in_array($record['player'], $whitelist) ? 'danger' : 'success')
+                    ->action(function (array $record) use ($whitelist) {
+                        /** @var Server $server */
+                        $server = Filament::getTenant();
+
+                        try {
+                            $action = in_array($record['player'], $whitelist) ? 'remove' : 'add';
+
+                            $server->send('whitelist ' . $action . ' ' . $record['player']);
+
+                            Notification::make()
+                                ->title(trans('player-counter::query.notifications.player_whitelist_' . $action))
+                                ->body($record['player'])
+                                ->success()
+                                ->send();
+
+                            $this->refreshPage();
+                        } catch (Exception $exception) {
+                            report($exception);
+
+                            Notification::make()
+                                ->title(trans('player-counter::query.notifications.player_whitelist_failed'))
+                                ->body($exception->getMessage())
+                                ->danger()
+                                ->send();
+                        }
+                    }),
+                Action::make('op')
+                    ->label(fn (array $record) => in_array($record['player'], $ops) ? trans('player-counter::query.remove_from_ops') : trans('player-counter::query.add_to_ops'))
+                    ->icon(fn (array $record) => in_array($record['player'], $ops) ? 'tabler-shield-minus' : 'tabler-shield-plus')
+                    ->color(fn (array $record) => in_array($record['player'], $ops) ? 'warning' : 'success')
+                    ->action(function (array $record) use ($ops) {
+                        /** @var Server $server */
+                        $server = Filament::getTenant();
+
+                        try {
+                            $action = in_array($record['player'], $ops) ? 'deop' : 'op';
+
+                            $server->send($action  . ' ' . $record['player']);
+
+                            Notification::make()
+                                ->title(trans('player-counter::query.notifications.player_' . $action))
+                                ->body($record['player'])
+                                ->success()
+                                ->send();
+
+                            $this->refreshPage();
+                        } catch (Exception $exception) {
+                            report($exception);
+
+                            Notification::make()
+                                ->title(trans('player-counter::query.notifications.player_op_failed'))
+                                ->body($exception->getMessage())
+                                ->danger()
+                                ->send();
+                        }
+                    }),
+            ])
+            ->emptyStateHeading(function () {
+                /** @var Server $server */
+                $server = Filament::getTenant();
+
+                /** @var ServerState|ContainerStatus $condition */
+                $condition = $server->condition();
+
+                if ($condition instanceof ContainerStatus && $condition === ContainerStatus::Running) {
+                    return trans('player-counter::query.table.no_players');
+                }
+
+                return trans('player-counter::query.table.server_offline');
+            })
+            ->emptyStateDescription(function () {
+                /** @var Server $server */
+                $server = Filament::getTenant();
+
+                /** @var ServerState|ContainerStatus $condition */
+                $condition = $server->condition();
+
+                if ($condition instanceof ContainerStatus && $condition === ContainerStatus::Running) {
+                    return trans('player-counter::query.table.no_players_description');
+                }
+
+                return null;
+            });
     }
 
     public function content(Schema $schema): Schema
@@ -106,5 +254,11 @@ class PlayersPage extends Page implements HasTable
             ->components([
                 EmbeddedTable::make(),
             ]);
+    }
+
+    private function refreshPage(): void
+    {
+        $url = self::getUrl();
+        $this->redirect($url, FilamentView::hasSpaMode($url));
     }
 }
