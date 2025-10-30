@@ -43,7 +43,7 @@ class ProductPrice extends Model
     public function sync(): void
     {
         /** @var StripeClient $stripeClient */
-        $stripeClient = app(StripeClient::class);
+        $stripeClient = app(StripeClient::class); // @phpstan-ignore myCustomRules.forbiddenGlobalFunctions
 
         if (is_null($this->stripe_id)) {
             $stripePrice = $stripeClient->prices->create([

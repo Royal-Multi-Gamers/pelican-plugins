@@ -72,7 +72,10 @@ class PlayersPage extends Page implements HasTable
         /** @var Server $server */
         $server = Filament::getTenant();
 
-        $isMinecraft = PlayerCounterPlugin::getGameQuery($server)->first()?->query_type === 'minecraft';
+        /** @var ?GameQuery $gameQuery */
+        $gameQuery = PlayerCounterPlugin::getGameQuery($server)->first();
+
+        $isMinecraft = $gameQuery?->query_type === 'minecraft';
 
         $whitelist = [];
         $ops = [];
@@ -83,7 +86,11 @@ class PlayersPage extends Page implements HasTable
             try {
                 $whitelist = json_decode($fileRepository->getContent('whitelist.json'), true, 512, JSON_THROW_ON_ERROR);
                 $whitelist = array_unique(array_map(fn ($data) => $data['name'], $whitelist));
+            } catch (Exception $exception) {
+                report($exception);
+            }
 
+            try {
                 $ops = json_decode($fileRepository->getContent('ops.json'), true, 512, JSON_THROW_ON_ERROR);
                 $ops = array_unique(array_map(fn ($data) => $data['name'], $ops));
             } catch (Exception $exception) {
