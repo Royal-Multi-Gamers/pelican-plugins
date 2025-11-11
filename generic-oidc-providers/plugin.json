@@ -1,0 +1,17 @@
+{
+    "id": "generic-oidc-providers",
+    "name": "Generic OIDC Providers",
+    "author": "Boy132",
+    "version": "1.0.0",
+    "description": "Allows to create generic OIDC providers.",
+    "category": "plugin",
+    "url": "https://github.com/pelican-dev/plugins/tree/main/generic-oidc-providers",
+    "update_url": null,
+    "namespace": "Boy132\\GenericOIDCProviders",
+    "class": "GenericOIDCProvidersPlugin",
+    "panels": null,
+    "panel_version": null,
+    "composer_packages": {
+        "kovah/laravel-socialite-oidc": "^0.5"
+    }
+}

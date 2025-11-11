@@ -20,7 +20,7 @@ Very simple announcements via AlertBanners.
 
 ### [Billing](/billing) <sup><sub>by Boy132</sub></sup>
 
-Allows admins to create products and users to buy them. Features automatic server creation and also payment handling. Also adds a simple shop.
+Allows admins to create products and users to buy them. Features automatic server creation and payment handling. Also adds a simple shop.
 
 > [!CAUTION]
 > This plugin is incomplete!
@@ -30,6 +30,12 @@ Allows admins to create products and users to buy them. Features automatic serve
 ### [Fluffy Theme](/fluffy-theme) <sup><sub>by Boy132</sub></sup>
 
 Simple "Theme" with silly colors and font.
+
+---
+
+### [Generic OIDC Providers](/generic-oidc-providers) <sup><sub>by Boy132</sub></sup>
+
+Allows to create generic OIDC providers.
 
 ---
 
