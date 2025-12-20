@@ -54,6 +54,8 @@ Adds a button to the console for uploading console logs to [mclo.gs](https://mcl
 
 Allows to easily download minecraft mods & plugins from modrinth.
 
+Add `modrinth_mod` or `modrinth_plugins` to the features of your egg to enable the mod/ plugins page. Also make sure your egg has the `minecraft` tag and a tag for the mod loader, e.g. `paper` or `forge` or `fabric`.
+
 ---
 
 ### [Pirate Language](/pirate-language) <sup><sub>by Boy132</sub></sup>
@@ -68,6 +70,9 @@ Adds a new Pirate like language to the panel.
 ### [Player Counter](/player-counter) <sup><sub>by Boy132</sub></sup>
 
 Adds a simple player counter to the console and a player list page. Uses a [GameQ fork](https://github.com/krymosoftware/gameq).
+
+> [!IMPORTANT]
+> You need to have the bz2 php extension and zip/ 7zip installed!
 
 ---
 
