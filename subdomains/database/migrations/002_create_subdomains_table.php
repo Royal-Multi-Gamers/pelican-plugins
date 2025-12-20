@@ -24,18 +24,10 @@ return new class extends Migration
 
             $table->unique(['name', 'domain_id']);
         });
-
-        Schema::table('servers', function (Blueprint $table) {
-            $table->unsignedInteger('subdomain_limit')->default(0)->after('backup_limit');
-        });
     }
 
     public function down(): void
     {
         Schema::dropIfExists('subdomains');
-
-        Schema::table('servers', function (Blueprint $table) {
-            $table->dropColumn('subdomain_limit');
-        });
     }
 };
