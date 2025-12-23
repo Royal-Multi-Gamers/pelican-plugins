@@ -5,8 +5,10 @@ namespace Boy132\UserCreatableServers\Filament\Server\Pages;
 use App\Filament\Server\Pages\ServerFormPage;
 use App\Models\Server;
 use App\Repositories\Daemon\DaemonServerRepository;
+use App\Services\Servers\ServerDeletionService;
 use Boy132\UserCreatableServers\Filament\App\Widgets\UserResourceLimitsOverview;
 use Boy132\UserCreatableServers\Models\UserResourceLimits;
+use Exception;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
@@ -103,12 +105,46 @@ class ServerResourcePage extends ServerFormPage
 
     protected function getHeaderActions(): array
     {
+        /** @var Server $server */
+        $server = Filament::getTenant();
+
         return [
             Action::make('save')
-                ->label(__('filament-panels::resources/pages/edit-record.form.actions.save.label'))
+                ->label(trans('filament-panels::resources/pages/edit-record.form.actions.save.label'))
                 ->submit('save')
                 ->formId('form')
                 ->keyBindings(['mod+s']),
+            Action::make('delete_server')
+                ->visible(fn () => config('user-creatable-servers.can_users_delete_servers'))
+                ->authorize(fn () => $server->owner_id === auth()->user()->id || auth()->user()->can('delete server', $server))
+                ->label(trans('user-creatable-servers::strings.delete_server'))
+                ->color('danger')
+                ->icon('tabler-trash')
+                ->requiresConfirmation()
+                ->modalHeading(trans('user-creatable-servers::strings.delete_server_confirm'))
+                ->modalDescription(trans('user-creatable-servers::strings.delete_server_warning'))
+                ->modalSubmitActionLabel(trans('user-creatable-servers::strings.delete_server'))
+                ->action(function (ServerDeletionService $service) use ($server) {
+                    try {
+                        $service->handle($server);
+
+                        Notification::make()
+                            ->title(trans('user-creatable-servers::strings.server_deleted'))
+                            ->body(trans('user-creatable-servers::strings.server_deleted_success'))
+                            ->success()
+                            ->send();
+
+                        redirect(Filament::getDefaultPanel()->getUrl());
+                    } catch (Exception $exception) {
+                        report($exception);
+
+                        Notification::make()
+                            ->title(trans('user-creatable-servers::strings.server_delete_error'))
+                            ->body($exception->getMessage())
+                            ->danger()
+                            ->send();
+                    }
+                }),
         ];
     }
 

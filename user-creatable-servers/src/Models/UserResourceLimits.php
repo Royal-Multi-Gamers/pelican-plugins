@@ -42,7 +42,7 @@ class UserResourceLimits extends Model
         if ($this->cpu > 0) {
             $sum_cpu = $this->user->servers->sum('cpu');
 
-            return $this->cpu - $sum_cpu;
+            return max(0, $this->cpu - $sum_cpu);
         }
 
         return null;
@@ -53,7 +53,7 @@ class UserResourceLimits extends Model
         if ($this->memory > 0) {
             $sum_memory = $this->user->servers->sum('memory');
 
-            return $this->memory - $sum_memory;
+            return max(0, $this->memory - $sum_memory);
         }
 
         return null;
@@ -64,7 +64,7 @@ class UserResourceLimits extends Model
         if ($this->disk > 0) {
             $sum_disk = $this->user->servers->sum('disk');
 
-            return $this->disk - $sum_disk;
+            return max(0, $this->disk - $sum_disk);
         }
 
         return null;
