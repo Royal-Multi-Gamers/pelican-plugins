@@ -77,6 +77,7 @@ class GameQueryResource extends Resource
                     ->label(trans('player-counter::query.type'))
                     ->required()
                     ->options(GameQueryType::class)
+                    ->disableOptionWhen(fn (string $value) => $value === GameQueryType::FiveMRedM->value) // see https://github.com/pelican-dev/plugins/issues/48
                     ->selectablePlaceholder(false)
                     ->preload()
                     ->searchable(),
