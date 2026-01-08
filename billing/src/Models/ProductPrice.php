@@ -89,8 +89,17 @@ class ProductPrice extends Model implements HasLabel
         }
     }
 
+    public function isFree(): bool
+    {
+        return !$this->cost;
+    }
+
     public function formatCost(): string
     {
+        if ($this->isFree()) {
+            return 'Free';
+        }
+
         $formatter = new NumberFormatter(user()->language ?? 'en', NumberFormatter::CURRENCY);
 
         return $formatter->formatCurrency($this->cost, config('billing.currency'));
