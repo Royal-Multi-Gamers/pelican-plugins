@@ -44,7 +44,10 @@ class GameQuery extends Model
     /** @return array<string, mixed> */
     public function runQuery(Allocation $allocation): array
     {
-        $host = (is_ipv6($allocation->ip) ? '[' . $allocation->ip . ']' : $allocation->ip) . ':' . $allocation->port;
+        $ip = config('player-counter.use_alias') && is_ip($allocation->alias) ? $allocation->alias : $allocation->ip;
+        $ip = is_ipv6($ip) ? '[' . $ip . ']' : $ip;
+
+        $host = $ip . ':' . $allocation->port;
 
         try {
             $data = [
