@@ -1,8 +1,8 @@
 <?php
 
-namespace Boy132\PlayerCounter\Filament\Admin\Resources\GameQueries\Pages;
+namespace ServerStatus\PlayerCounter\Filament\Admin\Resources\GameQueries\Pages;
 
-use Boy132\PlayerCounter\Filament\Admin\Resources\GameQueries\GameQueryResource;
+use ServerStatus\PlayerCounter\Filament\Admin\Resources\GameQueries\GameQueryResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ManageRecords;
 

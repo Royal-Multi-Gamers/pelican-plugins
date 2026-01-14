@@ -1,13 +1,13 @@
 {
     "id": "player-counter",
     "name": "Player Counter",
-    "author": "Boy132",
+    "author": "Boy132 & Royal Multi Gamers",
     "version": "1.0.0",
     "description": "Show the amount of connected players to the server",
     "category": "plugin",
     "url": "https://github.com/pelican-dev/plugins/tree/main/player-counter",
     "update_url": null,
-    "namespace": "Boy132\\PlayerCounter",
+    "namespace": "ServerStatus\\PlayerCounter",
     "class": "PlayerCounterPlugin",
     "panels": [
         "admin",

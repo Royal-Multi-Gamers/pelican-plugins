@@ -3,8 +3,8 @@
 use App\Http\Middleware\Activity\ServerSubject;
 use App\Http\Middleware\Api\Client\Server\AuthenticateServerAccess;
 use App\Http\Middleware\Api\Client\Server\ResourceBelongsToServer;
-use Boy132\PlayerCounter\Http\Controllers\Api\Client\Servers\PlayerCounterController;
-use Boy132\PlayerCounter\Providers\PlayerCounterRoutesProvider;
+use ServerStatus\PlayerCounter\Http\Controllers\Api\Client\Servers\PlayerCounterController;
+use ServerStatus\PlayerCounter\Providers\PlayerCounterRoutesProvider;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Route;
 

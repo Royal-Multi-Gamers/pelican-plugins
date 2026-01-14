@@ -1,6 +1,6 @@
 <?php
 
-namespace Boy132\PlayerCounter;
+namespace ServerStatus\PlayerCounter;
 
 use App\Contracts\Plugins\HasPluginSettings;
 use App\Traits\EnvironmentWriterTrait;
@@ -22,9 +22,9 @@ class PlayerCounterPlugin implements HasPluginSettings, Plugin
     {
         $id = str($panel->getId())->title();
 
-        $panel->discoverResources(plugin_path($this->getId(), "src/Filament/$id/Resources"), "Boy132\\PlayerCounter\\Filament\\$id\\Resources");
-        $panel->discoverPages(plugin_path($this->getId(), "src/Filament/$id/Pages"), "Boy132\\PlayerCounter\\Filament\\$id\\Pages");
-        $panel->discoverWidgets(plugin_path($this->getId(), "src/Filament/$id/Widgets"), "Boy132\\PlayerCounter\\Filament\\$id\\Widgets");
+        $panel->discoverResources(plugin_path($this->getId(), "src/Filament/$id/Resources"), "ServerStatus\\PlayerCounter\\Filament\\$id\\Resources");
+        $panel->discoverPages(plugin_path($this->getId(), "src/Filament/$id/Pages"), "ServerStatus\\PlayerCounter\\Filament\\$id\\Pages");
+        $panel->discoverWidgets(plugin_path($this->getId(), "src/Filament/$id/Widgets"), "ServerStatus\\PlayerCounter\\Filament\\$id\\Widgets");
     }
 
     public function boot(Panel $panel): void {}

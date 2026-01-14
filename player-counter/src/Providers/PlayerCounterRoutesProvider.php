@@ -1,6 +1,6 @@
 <?php
 
-namespace Boy132\PlayerCounter\Providers;
+namespace ServerStatus\PlayerCounter\Providers;
 
 use App\Models\Server;
 use Illuminate\Cache\RateLimiting\Limit;

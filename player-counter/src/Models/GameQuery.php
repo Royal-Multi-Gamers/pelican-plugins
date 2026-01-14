@@ -1,10 +1,10 @@
 <?php
 
-namespace Boy132\PlayerCounter\Models;
+namespace ServerStatus\PlayerCounter\Models;
 
 use App\Models\Allocation;
 use App\Models\Egg;
-use Boy132\PlayerCounter\Enums\GameQueryType;
+use ServerStatus\PlayerCounter\Enums\GameQueryType;
 use Exception;
 use GameQ\GameQ;
 use Illuminate\Database\Eloquent\Collection;

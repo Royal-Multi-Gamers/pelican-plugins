@@ -1,6 +1,6 @@
 <?php
 
-namespace Boy132\PlayerCounter\Enums;
+namespace ServerStatus\PlayerCounter\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 

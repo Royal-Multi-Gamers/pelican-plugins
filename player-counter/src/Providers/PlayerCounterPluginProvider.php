@@ -1,14 +1,14 @@
 <?php
 
-namespace Boy132\PlayerCounter\Providers;
+namespace ServerStatus\PlayerCounter\Providers;
 
 use App\Enums\ConsoleWidgetPosition;
 use App\Filament\Server\Pages\Console;
 use App\Models\Egg;
 use App\Models\Role;
-use Boy132\PlayerCounter\Filament\Server\Widgets\ServerPlayerWidget;
-use Boy132\PlayerCounter\Models\EggGameQuery;
-use Boy132\PlayerCounter\Models\GameQuery;
+use ServerStatus\PlayerCounter\Filament\Server\Widgets\ServerPlayerWidget;
+use ServerStatus\PlayerCounter\Models\EggGameQuery;
+use ServerStatus\PlayerCounter\Models\GameQuery;
 use Illuminate\Support\ServiceProvider;
 
 class PlayerCounterPluginProvider extends ServiceProvider

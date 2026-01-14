@@ -1,11 +1,11 @@
 <?php
 
-namespace Boy132\PlayerCounter\Database\Seeders;
+namespace ServerStatus\PlayerCounter\Database\Seeders;
 
 use App\Models\Egg;
-use Boy132\PlayerCounter\Enums\GameQueryType;
-use Boy132\PlayerCounter\Models\EggGameQuery;
-use Boy132\PlayerCounter\Models\GameQuery;
+use ServerStatus\PlayerCounter\Enums\GameQueryType;
+use ServerStatus\PlayerCounter\Models\EggGameQuery;
+use ServerStatus\PlayerCounter\Models\GameQuery;
 use Illuminate\Database\Seeder;
 
 class PlayerCounterSeeder extends Seeder

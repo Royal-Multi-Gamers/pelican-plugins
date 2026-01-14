@@ -1,6 +1,6 @@
 <?php
 
-namespace Boy132\PlayerCounter\Models;
+namespace ServerStatus\PlayerCounter\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 

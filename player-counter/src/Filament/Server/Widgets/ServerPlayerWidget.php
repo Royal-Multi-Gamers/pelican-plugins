@@ -1,10 +1,10 @@
 <?php
 
-namespace Boy132\PlayerCounter\Filament\Server\Widgets;
+namespace ServerStatus\PlayerCounter\Filament\Server\Widgets;
 
 use App\Filament\Server\Components\SmallStatBlock;
 use App\Models\Server;
-use Boy132\PlayerCounter\Models\GameQuery;
+use ServerStatus\PlayerCounter\Models\GameQuery;
 use Filament\Facades\Filament;
 use Filament\Widgets\StatsOverviewWidget;
 

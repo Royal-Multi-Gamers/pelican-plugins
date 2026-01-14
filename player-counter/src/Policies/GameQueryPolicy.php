@@ -1,6 +1,6 @@
 <?php
 
-namespace Boy132\PlayerCounter\Policies;
+namespace ServerStatus\PlayerCounter\Policies;
 
 use App\Policies\DefaultAdminPolicies;
 

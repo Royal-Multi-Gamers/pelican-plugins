@@ -1,10 +1,10 @@
 <?php
 
-namespace Boy132\PlayerCounter\Http\Controllers\Api\Client\Servers;
+namespace ServerStatus\PlayerCounter\Http\Controllers\Api\Client\Servers;
 
 use App\Http\Controllers\Api\Client\ClientApiController;
 use App\Models\Server;
-use Boy132\PlayerCounter\Models\GameQuery;
+use ServerStatus\PlayerCounter\Models\GameQuery;
 use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;

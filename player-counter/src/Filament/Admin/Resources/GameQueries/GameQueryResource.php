@@ -1,10 +1,10 @@
 <?php
 
-namespace Boy132\PlayerCounter\Filament\Admin\Resources\GameQueries;
+namespace ServerStatus\PlayerCounter\Filament\Admin\Resources\GameQueries;
 
-use Boy132\PlayerCounter\Enums\GameQueryType;
-use Boy132\PlayerCounter\Filament\Admin\Resources\GameQueries\Pages\ManageGameQueries;
-use Boy132\PlayerCounter\Models\GameQuery;
+use ServerStatus\PlayerCounter\Enums\GameQueryType;
+use ServerStatus\PlayerCounter\Filament\Admin\Resources\GameQueries\Pages\ManageGameQueries;
+use ServerStatus\PlayerCounter\Models\GameQuery;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;

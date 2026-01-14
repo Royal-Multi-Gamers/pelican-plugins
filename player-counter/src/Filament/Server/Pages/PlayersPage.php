@@ -1,12 +1,12 @@
 <?php
 
-namespace Boy132\PlayerCounter\Filament\Server\Pages;
+namespace ServerStatus\PlayerCounter\Filament\Server\Pages;
 
 use App\Models\Server;
 use App\Repositories\Daemon\DaemonFileRepository;
 use App\Traits\Filament\BlockAccessInConflict;
-use Boy132\PlayerCounter\Filament\Server\Widgets\ServerPlayerWidget;
-use Boy132\PlayerCounter\Models\GameQuery;
+use ServerStatus\PlayerCounter\Filament\Server\Widgets\ServerPlayerWidget;
+use ServerStatus\PlayerCounter\Models\GameQuery;
 use Carbon\CarbonInterval;
 use Exception;
 use Filament\Actions\Action;
